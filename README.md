@@ -2,7 +2,9 @@
  Software Design Project
 
 Before running the main.py file:
-    COMMAND LINE:
+Make sure you have Python 3.8 or newer
+Open folder in VS CODE (or any IDE)
+From this directory run command:
 
     pip install -r requirements.txt
 
