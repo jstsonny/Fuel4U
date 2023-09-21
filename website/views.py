@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 
 views = Blueprint('views', __name__)
 
@@ -6,7 +6,7 @@ views = Blueprint('views', __name__)
 def home():
     return render_template("home.html")
 
-@views.route('/profile')
+@views.route('/profile', methods=['GET','POST'])
 def profile():
     return render_template("profile.html")
 

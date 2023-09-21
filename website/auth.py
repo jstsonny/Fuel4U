@@ -13,7 +13,7 @@ def signup():
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
-        #when adding database, we are gonna add conditions to already existing user
+        #when adding database, we are going to add conditions to already existing user
 
         if password1 != password2:
             flash('Passwords don\'t match.', category='error')
