@@ -6,7 +6,7 @@ views = Blueprint('views', __name__)
 def home():
     return render_template("home.html")
 
-@views.route('/profile')
+@views.route('/profile', methods=['GET', 'POST'])
 def profile():
     if request.method == 'POST':
         full_name = request.form.get('fullName')

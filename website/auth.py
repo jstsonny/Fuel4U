@@ -26,7 +26,7 @@ def signup():
             flash('Passwords don\'t match.', category='error')
         else:
             flash('Account created!', category='success')
-            #return redirect(url_for('views.profile'))
+            return redirect(url_for('views.profile'))
         
     return render_template("signup.html")
 
