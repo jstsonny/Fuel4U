@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from . import db
 from .models import User, Quote  # Import the User model
+from datetime import datetime
 
 views = Blueprint('views', __name__)
 
@@ -41,18 +42,25 @@ def profile():
     
     return render_template("profile.html", user=current_user)
 
-@views.route('/get_quote')
+@views.route('/get_quote', methods=['GET', 'POST'])
 def getquote():
     if request.method == "POST":
-
-        gallons = request.form.get('gallonsRequested')
+        gallons = int(request.form.get('gallonsRequested'))
         date = request.form.get('deliveryDate')
+        date_obj = datetime.strptime(date, '%Y-%m-%d').date()
         state = current_user.state
+        address = current_user.address1
+        quote = Quote(gallons_requested=gallons, delivery_date=date_obj, user=current_user, state=state, address=address)
 
-        quote = Quote(gallons_requested=gallons, delivery_date=date, state=state)
-        current_user.quotes = quote
+        db.session.add(quote)
+        db.session.commit()
 
-    return render_template("getquote.html", user=current_user)
+        return redirect(url_for('views.getquote'))
+
+    latest_quote = Quote.query.filter_by(user_id=current_user.id).order_by(Quote.id.desc()).first()
+
+    return render_template("getquote.html", user=current_user, quote=latest_quote)
+
 
 @views.route('/quote_history')
 def quotehistory():
