@@ -22,21 +22,27 @@
                   background-clip: text;
                   -webkit-background-clip: text;">Fuel4U</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/sign_up">Sign Up</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/login">Login</a>
-                </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                   <a class="nav-link" href="/profile">Profile</a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link" href="/logout">Log Out</a>
+                </li>
+                <li class="nav-item">
                   <a class="nav-link" href="/get_quote">Get Quote</a>
                 </li>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/quote_history">Quote History</a>
+                <li class="nav-item">
+                  <a class="nav-link" href="/quote_history">Quote History</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/sign_up">Sign Up</a>
+                </li>
+                {% endif %}
               </li>
               </ul>
             </div>
