@@ -15,7 +15,7 @@ class User(db.Model, UserMixin):
     city = db.Column(db.String(150),nullable = True)
     state = db.Column(db.String(2),nullable = True)
     zipcode = db.Column(db.Integer,nullable = True)
-    quotes = db.relationship('Quote', backref='user', lazy=True, foreign_keys='Quote.user_id')     
+    quotes = db.relationship('Quote', back_populates='user', lazy=True)  
     def get_id(self):
         return self.username
 
@@ -27,19 +27,33 @@ class Quote(db.Model):
     suggested_price = db.Column(db.Float)
     total_amount_due = db.Column(db.Float)
     state = db.Column(db.String(2))
-    user_id = db.Column(db.String(150), db.ForeignKey('user.username'), nullable=False)
+    address = db.Column(db.String(150))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', back_populates="quotes")
 
-    def __init__(self, gallons_requested, delivery_date, user_id, state):
+    def __init__(self, gallons_requested, delivery_date, user, state, address):
         self.gallons_requested = gallons_requested
         self.delivery_date = delivery_date
-        self.user_id = user_id
+        self.user_id = user.id
+        self.user = user
         self.state = state
+        self.address = address
+        self.calculate_suggested_price()
+        self.calculate_total_amount_due()
 
     def calculate_suggested_price(self):
         # Calculate the margin based on the factors
         current_price = 1.50  # Constant current price per gallon
-        location_factor = 0.02 if self.user.state == 'TX' else 0.04
-        rate_history_factor = 0.01 if self.user.quotes.count() > 0 else 0.00
+        location_factor = 0.02 
+        if self.state == 'TX':
+            location_factor = 0.02 
+        else: 
+            location_factor = 0.04
+        if len(self.user.quotes) > 0:
+            rate_history_factor = 0.01
+        else:
+            rate_history_factor = 0.00
+            
         gallons_requested_factor = 0.02 if self.gallons_requested > 1000 else 0.03
         company_profit_factor = 0.10
 

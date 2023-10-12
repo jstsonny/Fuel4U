@@ -1,20 +1,20 @@
 {% extends "base.html" %} {% block title %}Quote History{% endblock %}
 {% block content %}
-<div style="padding: 20px; margin: 0 auto; margin-top: 40px; background-color: white; opacity: 85%; width: 50%; border-radius: 10%;">
+<div style="padding: 20px; margin: 0 auto; margin-top: 40px; background-color: white; opacity: 85%; width: 50%;">
     <h3 align="center">Fuel Quote History</h3>
 
-    {% for quote in fuel_quotes %}
+    {% for quote in user.quotes[::-1] %}
     <form method="GET" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px;">
         <!-- Gallons Requested -->
         <div class="form-group">
             <label for="gallonsRequested{{ loop.index }}">Gallons Requested:</label>
-            <input type="number" id="gallonsRequested{{ loop.index }}" name="gallonsRequested{{ loop.index }}" readonly value="{{ quote.gallons_requested }}">
+            <input type="text" id="gallonsRequested{{ loop.index }}" name="gallonsRequested{{ loop.index }}" readonly value="{{ quote.gallons_requested }}">
         </div>
 
         <!-- Delivery Address -->
         <div class="form-group">
             <label for="deliveryAddress{{ loop.index }}">Delivery Address:</label>
-            <input type="text" id="deliveryAddress{{ loop.index }}" name="deliveryAddress{{ loop.index }}" readonly value="{{ quote.delivery_address }}">
+            <input type="text" id="deliveryAddress{{ loop.index }}" name="deliveryAddress{{ loop.index }}" readonly value="{{ quote.address }}">
         </div>
 
         <!-- Delivery Date -->
@@ -25,14 +25,14 @@
 
         <!-- Suggested Price / gallon -->
         <div class="form-group">
-            <label for="suggestedPrice{{ loop.index }}">Suggested Price / gallon:</label>
-            <input type="number" id="suggestedPrice{{ loop.index }}" name="suggestedPrice{{ loop.index }}" readonly value="{{ quote.suggested_price }}">
+            <label for="suggestedPrice{{ loop.index }}">Suggested Price ($/gallon):</label>
+            <input type="text" id="suggestedPrice{{ loop.index }}" name="suggestedPrice{{ loop.index }}" readonly value="{{ quote.suggested_price }}">
         </div>
 
         <!-- Total Amount Due -->
         <div class="form-group">
             <label for="totalAmount{{ loop.index }}">Total Amount Due:</label>
-            <input type="number" id="totalAmount{{ loop.index }}" name="totalAmount{{ loop.index }}" readonly value="{{ quote.total_amount_due }}">
+            <input type="text" id="totalAmount{{ loop.index }}" name="totalAmount{{ loop.index }}" readonly value="{{ quote.total_amount_due }}">
         </div>
     </form>
     {% endfor %}
