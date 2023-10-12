@@ -1,32 +1,63 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
+from .models import User  # Import the User model
+from werkzeug.security import generate_password_hash, check_password_hash  # Import password hash functions
+from . import db
+from flask_login import login_user, login_required, logout_user, current_user
 
-auth = Blueprint('auth', __name__)
+auth = Blueprint('auth',  __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    data = request.form
-    print(data)
-    return render_template("login.html", boolean = True)
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
 
+        user = User.query.filter_by(username=username).first()
+        if user:
+            if check_password_hash(user.password, password):
+                flash('Logged in successfully!', category='success')
+                login_user(user, remember=True)
+                return redirect(url_for('views.home'))
+            else:
+                flash('Incorrect password, try again.', category='error')
+        else:
+            flash('Username does not exist.', category='error')
+
+    return render_template("login.html", user=current_user)
 
 @auth.route('/logout')
+@login_required
 def logout():
-    return "<p>logout</p>"
+    logout_user()
+    return redirect(url_for('auth.login'))
 
 @auth.route('/sign_up', methods=['GET', 'POST'])
-def signup():
+def sign_up():
     if request.method == 'POST':
         username = request.form.get('username')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
-        #when adding database, we are going to add conditions to already existing user
-
-        if password1 != password2:
+        if not username:
+            flash('Username is required.', category='error')
+        elif len(username) < 4:
+            flash('Username must be greater than 3 characters.', category='error')
+        elif password1 != password2:
             flash('Passwords don\'t match.', category='error')
+        elif len(password1) < 7:
+            flash('Password must be at least 7 characters.', category='error')
         else:
-            flash('Account created!', category='success')
-            #return redirect(url_for('views.profile'))
-        
-    return render_template("signup.html")
+            user = User.query.filter_by(username=username).first()
+            if user:
+                flash('Username already exists.', category='error')
+            else:
+                new_user = User(username=username, password=generate_password_hash(password1, method='sha256'))
+                db.session.add(new_user)
+                db.session.commit()
+                login_user(new_user, remember=True)
+                flash('Account created!', category='success')
+                return redirect(url_for('views.home'))
+
+    return render_template("signup.html", user=current_user)
+
 

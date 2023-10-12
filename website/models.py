@@ -6,15 +6,20 @@ from sqlalchemy.sql import func
 
 
 class User(db.Model, UserMixin):
-    username = db.Column(db.String(150, primary_key=True))
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(150),unique=True)  # Define username as the primary key
     password = db.Column(db.String(150))
-    fullName = db.Column(db.String(150))
-    address1 = db.Column(db.String(150))
-    address2 = db.Column(db.String(150))
-    city = db.Column(db.String(150))
-    state = db.Column(db.String(2))
-    zipcode = db.Column(db.Integer)
-    notes = db.relationship('Qoute')
+    fullName = db.Column(db.String(150),nullable = True)
+    address1 = db.Column(db.String(150),nullable = True)
+    address2 = db.Column(db.String(150),nullable = True)
+    city = db.Column(db.String(150),nullable = True)
+    state = db.Column(db.String(2),nullable = True)
+    zipcode = db.Column(db.Integer,nullable = True)
+    qoutes = db.relationship('Quote', backref='user', lazy=True)  # Assuming Quote is the correct model name
+    
+    def get_id(self):
+        return self.username
+
     
 class Quote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
