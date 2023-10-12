@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
+from . import db
+from .models import User, Quote  # Import the User model
 
 views = Blueprint('views', __name__)
 
@@ -27,15 +29,31 @@ def profile():
             if len(zip_code) !=10:
                 flash('Invalid zip', category='error') 
         else:
+            current_user.fullName = full_name
+            current_user.address1 = address_1
+            current_user.address2 = address_2
+            current_user.city = city
+            current_user.state = state
+            current_user.zipcode = zip_code
+            db.session.commit()
             flash('Account Updated!', category='success')
             return redirect(url_for('views.getquote'))
     
-    return render_template("profile.html")
+    return render_template("profile.html", user=current_user)
 
 @views.route('/get_quote')
 def getquote():
-    return render_template("getquote.html")
+    if request.method == "POST":
+
+        gallons = request.form.get('gallonsRequested')
+        date = request.form.get('deliveryDate')
+        state = current_user.state
+
+        quote = Quote(gallons_requested=gallons, delivery_date=date, state=state)
+        current_user.quotes = quote
+
+    return render_template("getquote.html", user=current_user)
 
 @views.route('/quote_history')
 def quotehistory():
-    return render_template("quotehistory.html")
+    return render_template("quotehistory.html", user=current_user)
