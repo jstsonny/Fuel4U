@@ -14,11 +14,8 @@
         type="text" 
         id="fullName" 
         name="fullName" 
-        {% if user.fullName%}
-        placeholder="{{ user.fullName }}"
-        {% else %}
+        value="{{ user.fullName or '' }}"
         placeholder="Enter full name"
-        {% endif %} 
         class="form-control" 
         required 
         maxlength="50">
@@ -30,11 +27,8 @@
         type="text" 
         id="address1" 
         name="address1" 
-        {% if user.address1%}
-        placeholder="{{ user.address1 }}"
-        {% else %}
+        value="{{ user.address1 or '' }}"
         placeholder="Enter address"
-        {% endif %} 
         class="form-control" 
         required 
         maxlength="100">
@@ -47,11 +41,8 @@
         id="address2" 
         name="address2" 
         class="form-control" 
-        {% if user.address2%}
-        placeholder="{{ user.address2 }}"
-        {% else %}
+        value="{{ user.address2 or '' }}"
         placeholder="Optional"
-        {% endif %} 
         maxlength="100">
     </div>
     <!--CITY-->
@@ -61,11 +52,8 @@
         type="text" 
         id="city" 
         name="city" 
-        {% if user.city%}
-        placeholder="{{ user.city }}"
-        {% else %}
+        value="{{ user.city or '' }}"
         placeholder="Enter city"
-        {% endif %} 
         class="form-control" 
         required 
         maxlength="100">
@@ -134,20 +122,21 @@
         type="text" 
         id="zipcode" 
         name="zipcode" 
-        {% if user.fullName%}
-        placeholder="{{ user.zipcode }}"
-        {% else %}
+        value="{{ user.zipcode or '' }}"
         placeholder="Enter zip code"
-        {% endif %} 
         class="form-control" 
         required 
         pattern="\d{5}(-\d{4})?"> 
         <!--Pattern requires either a 5 digit number or 9 digits with hyphen-->
     </div> 
     <br>
-    <div style="text-align: center;">  
-        <button type="submit" class="btn btn-primary">Submit</button>
+    {% if user.fullName %}<div style="text-align: center;">  
+        <button type="submit" class="btn btn-primary">Update</button>
     </div>
+    {% else %}<div style="text-align: center;">  
+        <button type="submit" class="btn btn-primary">Complete</button>
+    </div>
+    {% endif %}
 </form>
 
 {% endblock %}
