@@ -31,13 +31,13 @@
     <!-- Suggested Price / gallon -->
     <div class="form-group">
         <label for="suggestedPrice">Suggested Price ($/gallon):</label>
-        <input type="text" id="suggestedPrice" name="suggestedPrice" value="$ {{ quote.suggested_price | round(2)}}" readonly>
+        <input type="text" id="suggestedPrice" name="suggestedPrice" value="$ {{ quote.suggested_price }}" readonly>
     </div>
 
     <!-- Total Amount Due -->
     <div class="form-group">
         <label for="totalAmount">Total Amount Due:</label>
-        <input type="text" id="totalAmount" name="totalAmount" value="$ {{ quote.total_amount_due | round(2) }}" readonly >
+        <input type="text" id="totalAmount" name="totalAmount" value="$ {{ quote.total_amount_due }}" readonly >
     </div>
   </form>
  

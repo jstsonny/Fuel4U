@@ -26,13 +26,13 @@
         <!-- Suggested Price / gallon -->
         <div class="form-group">
             <label for="suggestedPrice{{ loop.index }}">Suggested Price ($/gallon):</label>
-            <input type="text" id="suggestedPrice{{ loop.index }}" name="suggestedPrice{{ loop.index }}" readonly value="$ {{ quote.suggested_price | round(2) }}">
+            <input type="text" id="suggestedPrice{{ loop.index }}" name="suggestedPrice{{ loop.index }}" readonly value="$ {{ quote.suggested_price }}">
         </div>
 
         <!-- Total Amount Due -->
         <div class="form-group">
             <label for="totalAmount{{ loop.index }}">Total Amount Due:</label>
-            <input type="text" id="totalAmount{{ loop.index }}" name="totalAmount{{ loop.index }}" readonly value="$ {{ quote.total_amount_due | round(2) }}">
+            <input type="text" id="totalAmount{{ loop.index }}" name="totalAmount{{ loop.index }}" readonly value="$ {{ quote.total_amount_due }}">
         </div>
     </form>
     {% endfor %}
