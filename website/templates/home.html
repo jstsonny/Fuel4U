@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %}
 {% block content %}
 
-<div style="padding: 20px; margin : 0 auto; margin-top :40px; background-color: white; opacity: 85%; width : 100%; border-radius: 10%; text-align: center;">
+<div style="padding: 20px; margin : 0 auto; margin-top :40px; background-color: white; opacity: 85%; width : 100%; border-radius: 1%; text-align: center;">
     <h3 align="center">Fuel4U</h3>
     <br>
     <h3 align="center" style="font-size: 14pt;">Your Fuel, Your Way</h3>
@@ -16,10 +16,10 @@
 
     <p align="center">Get your quote today!</p>
     {% if user.is_authenticated %}
-    <a class="btn btn-primary" href="/get_quote" role="button" style="margin-right: 10px; background-image: linear-gradient(purple, orange);">Get Quote</a>
+    <a class="btn btn-primary" href="/get_quote" role="button" style="margin-right: 10px; background-image: linear-gradient(rgb(34, 55, 78), rgb(204, 181, 139));">Get Quote</a>
     {% else %}
-    <a class="btn btn-primary" href="/login" role="button" style="margin-right: 10px; background-image: linear-gradient(purple, orange);">Login</a>
-    <a class="btn btn-primary" href="/sign_up" role="button" style="margin-left: 10px; background-image: linear-gradient(purple, orange);">Sign Up</a>
+    <a class="btn btn-primary" href="/login" role="button" style="margin-right: 10px; background-image: linear-gradient(rgb(34, 55, 78), rgb(204, 181, 139));">Login</a>
+    <a class="btn btn-primary" href="/sign_up" role="button" style="margin-left: 10px; background-image: linear-gradient(rgb(34, 55, 78), rgb(204, 181, 139));">Sign Up</a>
     {% endif %}
   </div>
 

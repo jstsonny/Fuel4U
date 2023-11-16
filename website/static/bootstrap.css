@@ -230,7 +230,7 @@ label {
 
 button {
   border-radius: 0;
-  background-image: linear-gradient(rgb(98, 1, 98), rgb(172, 112, 0));
+  background-image: linear-gradient(rgb(34, 55, 78), rgb(204, 181, 139));
 }
 
 button:focus {
@@ -380,7 +380,7 @@ h2, .h2 {
 h3, .h3 {
   font-size: 50px;
   font-weight: 600;
-  background-image: linear-gradient(to left, #553c9a, #f4b032);
+  background-image: linear-gradient(to left, rgb(34, 55, 78), rgb(204, 181, 139));
   color: transparent;
   background-clip: text;
   -webkit-background-clip: text;
