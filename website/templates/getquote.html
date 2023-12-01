@@ -1,8 +1,7 @@
 {% extends "base.html" %} {% block title %}Get Quote{% endblock %}
 {% block content %}
 
-<form method="POST" style="padding: 20px; margin : 0 auto; margin-top :40px; background-color: white; opacity: 85%; width : 50%; border-radius: 1%;">
-    <h3 align="center">Fuel Quote</h3>
+<form method="POST" id="fuelQuoteForm" style="padding: 20px; margin : 0 auto; margin-top :40px; background-color: white; opacity: 85%; width : 50%; border-radius: 1%;">    <h3 align="center">Fuel Quote</h3>
 
     <!-- Gallons Requested -->
     <div class="form-group">
@@ -19,7 +18,30 @@
     <div style="text-align: center;"> 
       <button type="submit" class="btn btn-primary">Get Quote</button>
     </div>
+
+    <input type="hidden" id="totalAmountHidden" name="totalAmountHidden" value="{{ quote.total_amount_due }}">
+    
+    <div style="text-align: center;"> 
+        <button type="button" class="btn btn-primary" onclick="showConfirmation()">Get Quote</button>
+    </div>
 </form>
+
+<script>
+  function showConfirmation() {
+      // Retrieve total amount due from the hidden field
+      var totalAmountDue = document.getElementById("totalAmountHidden").value;
+  
+      // Display confirmation popup
+      var isConfirmed = confirm("Total Amount Due: $" + totalAmountDue + "\n\nDo you want to proceed with the Fuel Quote?");
+      
+      // If the user confirms, submit the form
+      if (isConfirmed) {
+          document.getElementById("fuelQuoteForm").submit();
+      }
+  }
+</script>
+  
+
 
 <form method="GET" style="padding: 20px; margin : 0 auto; margin-top :40px; background-color: white; opacity: 85%; width : 50%; border-radius: 1%;">
     <!-- Delivery Address (non-editable) -->
