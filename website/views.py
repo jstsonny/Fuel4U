@@ -26,9 +26,8 @@ def profile():
             flash('Invalid address', category='error')
         elif len(city) < 1:
             flash('Invalid city', category='error')
-        elif len(zip_code) != 5:
-            if len(zip_code) !=10:
-                flash('Invalid zip', category='error') 
+        elif not (len(zip_code) == 5 or (len(zip_code) == 10 and zip_code[5] == '-')):
+            flash('Invalid zip code', category='error')
         else:
             current_user.fullName = full_name
             current_user.address1 = address_1

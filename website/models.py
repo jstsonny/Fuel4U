@@ -14,7 +14,7 @@ class User(db.Model, UserMixin):
     address2 = db.Column(db.String(150),nullable = True)
     city = db.Column(db.String(150),nullable = True)
     state = db.Column(db.String(2),nullable = True)
-    zipcode = db.Column(db.Integer,nullable = True)
+    zipcode = db.Column(db.String(10),nullable = True)
     quotes = db.relationship('Quote', back_populates='user', lazy=True)  
     def get_id(self):
         return self.username
