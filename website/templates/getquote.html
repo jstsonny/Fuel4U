@@ -1,13 +1,18 @@
-{% extends "base.html" %} {% block title %}Get Quote{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}Get Quote{% endblock %}
+
 {% block content %}
 
+
+<!-- Form to Get Quote -->
 <form method="POST" style="padding: 20px; margin : 0 auto; margin-top :40px; background-color: white; opacity: 85%; width : 50%; border-radius: 1%;">
     <h3 align="center">Fuel Quote</h3>
 
     <!-- Gallons Requested -->
     <div class="form-group">
       <label for="gallonsRequested">Gallons Requested:</label>
-      <input type="number" id="gallonsRequested" name="gallonsRequested" required min="1" step="1" required>
+      <input type="number" id="gallonsRequested" name="gallonsRequested" required min="1" step="1">
     </div>
 
     <!-- Delivery Date -->
@@ -21,7 +26,8 @@
     </div>
 </form>
 
-<form method="GET" style="padding: 20px; margin : 0 auto; margin-top :40px; background-color: white; opacity: 85%; width : 50%; border-radius: 1%;">
+<!-- Display Quote Details (Read-Only) -->
+<form style="padding: 20px; margin : 0 auto; margin-top :40px; background-color: white; opacity: 85%; width : 50%; border-radius: 1%;">
     <!-- Delivery Address (non-editable) -->
     <div class="form-group">
       <label for="deliveryAddress">Delivery Address:</label>
@@ -37,8 +43,22 @@
     <!-- Total Amount Due -->
     <div class="form-group">
         <label for="totalAmount">Total Amount Due:</label>
-        <input type="text" id="totalAmount" name="totalAmount" value="$ {{ quote.total_amount_due }}" readonly >
+        <input type="text" id="totalAmount" name="totalAmount" value="$ {{ quote.total_amount_due }}" readonly>
     </div>
-  </form>
- 
+</form>
+<!-- Flash Messages for Quote Confirmation -->
+{% for message in get_flashed_messages(category_filter=["info"]) %}
+  <div class="alert alert-info" style="padding: 20px; margin : 0 auto; margin-top :40px; background-color: white; opacity: 85%; width : 50%; border-radius: 1%;">
+    {{ message }}
+    <!-- Confirmation Form -->
+    <form method="POST" style="margin : 0 auto; margin-top :20px; background-color: white; opacity: 85%; width : 50%; border-radius: 1%;">
+      <input type="hidden" name="gallonsRequested" value="{{ request.form.get('gallonsRequested') }}">
+      <input type="hidden" name="deliveryDate" value="{{ request.form.get('deliveryDate') }}">
+      <div style="text-align: center;">
+        <button type="submit" name="confirm" class="btn btn-primary">Confirm Quote</button>
+    </div>
+    </form>
+  </div>
+{% endfor %}
+
 {% endblock %}
