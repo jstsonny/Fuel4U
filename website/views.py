@@ -44,23 +44,30 @@ def profile():
 
 @views.route('/get_quote', methods=['GET', 'POST'])
 def getquote():
+    quote = None  # Initialize quote to None
+
     if request.method == "POST":
-        gallons = int(request.form.get('gallonsRequested'))
+        gallons = float(request.form.get('gallonsRequested'))
         date = request.form.get('deliveryDate')
         date_obj = datetime.strptime(date, '%Y-%m-%d').date()
-        state = current_user.state
-        address = current_user.address1
-        quote = Quote(gallons_requested=gallons, delivery_date=date_obj, user=current_user, state=state, address=address)
 
-        db.session.add(quote)
-        db.session.commit()
+        # Create a temporary quote object for calculation purposes
+        temp_quote = Quote(gallons_requested=gallons, delivery_date=date_obj, user=current_user, state=current_user.state, address=current_user.address1)
 
-        return redirect(url_for('views.getquote'))
+        # Check if user has confirmed the submission
+        if 'confirm' in request.form:
+            # Save the actual quote to the database
+            db.session.add(temp_quote)
+            db.session.commit()
+            flash('Quote submitted successfully!', category='success')
+            return redirect(url_for('views.quotehistory'))
+        else:
+            # Assign temp_quote to quote for displaying in the template
+            quote = temp_quote
+            flash(f'Suggested Price: ${temp_quote.suggested_price} per gallon. Total Amount: ${temp_quote.total_amount_due}. Click confirm to submit.', category='info')
 
-    latest_quote = Quote.query.filter_by(user_id=current_user.id).order_by(Quote.id.desc()).first()
-
-    return render_template("getquote.html", user=current_user, quote=latest_quote)
-
+    # Always pass the quote variable to the template
+    return render_template("getquote.html", user=current_user, quote=quote)
 
 @views.route('/quote_history')
 def quotehistory():
